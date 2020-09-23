@@ -20,6 +20,8 @@ class ProfileViewController: UIViewController {
         case someEvent
     }
     
+    var imagePicker: UIImagePickerController!
+    
     //MARK: - IBOutlets
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var descriptionLabel: UILabel!
@@ -36,17 +38,37 @@ class ProfileViewController: UIViewController {
     
     //MARK: - IBActions
     
+    @IBAction func editButtonTapped(_ sender: Any) {
+        createChooseAlert()
+    }
+    
+    
+    
+    private func createChooseAlert() {
+        let alertController = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let takePictureAction = UIAlertAction(title: "Take a Picture", style: .default) { [weak self] _  in
+            self?.takePhoto()
+        }
+        let choosePictureAction = UIAlertAction(title: "Choose from Gallery", style: .default) { action in
+            
+        }
+        alertController.addAction(cancelAction)
+        alertController.addAction(takePictureAction)
+        present(alertController, animated: true, completion: nil)
+    }
     
    //MARK: - Life Methods
     override func loadView() {
         super.loadView()
         view.backgroundColor = .white
-        
+        print(UIDevice.current.name)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         print(#function)
+        print("Edit Button frame is: ", editButton.frame) //Фрейм недействительный(относительно родителя), т.к на этом этапе у вьюКонтролера еще не просчитаны размеры родительской вьюхи
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,8 +87,8 @@ class ProfileViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        onComplete?(.someEvent)
         print(#function)
+        print("Edit Button frame is: ", editButton.frame) //НА этом этапе размеры уже просчитаны и можно оперрировать фреймами и т.д
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -106,6 +128,22 @@ extension ProfileViewController {
     
     private func setupSaveButton() {
         saveButton.layer.cornerRadius = saveButton.frame.height / 2
+    }
+}
+
+extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    private func takePhoto() {
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .camera
+        imagePicker.allowsEditing = true
+        imagePicker.takePicture()
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        imagePicker.dismiss(animated: true, completion: nil)
+        logoImageView.image = info[.livePhoto] as? UIImage
     }
 }
 
