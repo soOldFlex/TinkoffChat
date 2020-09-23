@@ -20,7 +20,8 @@ class ProfileViewController: UIViewController {
         case someEvent
     }
     
-    var imagePicker: UIImagePickerController!
+    //MARK: - Private Properies
+    private var imagePicker: UIImagePickerController!
     
     //MARK: - IBOutlets
     @IBOutlet weak var saveButton: UIButton!
@@ -40,22 +41,6 @@ class ProfileViewController: UIViewController {
     
     @IBAction func editButtonTapped(_ sender: Any) {
         createChooseAlert()
-    }
-    
-    
-    
-    private func createChooseAlert() {
-        let alertController = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let takePictureAction = UIAlertAction(title: "Take a Picture", style: .default) { [weak self] _  in
-            self?.takePhoto()
-        }
-        let choosePictureAction = UIAlertAction(title: "Choose from Gallery", style: .default) { action in
-            
-        }
-        alertController.addAction(cancelAction)
-        alertController.addAction(takePictureAction)
-        present(alertController, animated: true, completion: nil)
     }
     
    //MARK: - Life Methods
@@ -100,8 +85,29 @@ class ProfileViewController: UIViewController {
         super.viewDidDisappear(animated)
         print(#function)
     }
-
-
+    
+    //MARK: - Private Methods
+    private func displayAlertWith(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func createChooseAlert() {
+        let alertController = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let takePictureAction = UIAlertAction(title: "Take a Picture", style: .default) { [weak self] _  in
+            self?.takePicture()
+        }
+        let choosePictureAction = UIAlertAction(title: "Choose from Gallery", style: .default) { [weak self] action in
+            self?.choosePicture()
+        }
+        alertController.addAction(cancelAction)
+        alertController.addAction(takePictureAction)
+        alertController.addAction(choosePictureAction)
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 //MARK: - ViewExtension
@@ -131,19 +137,37 @@ extension ProfileViewController {
     }
 }
 
+//MARK: - UIIMagePickerControllerDelegate
 extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    private func takePhoto() {
-        imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .camera
-        imagePicker.allowsEditing = true
-        imagePicker.takePicture()
-        present(imagePicker, animated: true, completion: nil)
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let pickedImage = info[.originalImage] as? UIImage {
+            logoImageView.image = pickedImage
+        }
+        imagePicker.dismiss(animated: true, completion: nil)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        imagePicker.dismiss(animated: true, completion: nil)
-        logoImageView.image = info[.livePhoto] as? UIImage
+    private func takePicture() {
+        guard UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) else {
+            displayAlertWith(title: "Error", message: "You don't have camera")
+            return
+        }
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = UIImagePickerController.SourceType.camera
+        imagePicker.allowsEditing = false
+        self.present(imagePicker, animated: true, completion: nil)
+    }
+    
+    private func choosePicture() {
+        guard UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary) else {
+            displayAlertWith(title: "Error", message: "Can't go to gallery")
+            return
+        }
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        imagePicker.sourceType = UIImagePickerController.SourceType.photoLibrary
+        self.present(imagePicker, animated: true, completion: nil)
     }
 }
 
