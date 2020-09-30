@@ -11,6 +11,7 @@ import UIKit
 
 protocol MainIneractor {
     func runInitialVC()
+    func runChatVC()
 }
 
 
@@ -24,13 +25,13 @@ struct MainIneractorImpl {
         self.factory = factory
         self.window = window
         
-        runInitialVC()
+        //runInitialVC()
+        runChatVC()
         displayInitialVC()
     }
 }
 
 extension MainIneractorImpl: MainIneractor {
-    
     private func displayInitialVC() {
         if navigationViewController.viewControllers.isEmpty {
             navigationViewController.title = "Not Initial ViewController"
@@ -44,8 +45,6 @@ extension MainIneractorImpl: MainIneractor {
     
      func runInitialVC() {
         let vc = factory.getProfile()
-        //let presenter = presenterFactory.profilePresenter(for: vc)
-        //vc.presenter = presenter
         navigationViewController.setViewControllers([vc], animated: true)
         window.rootViewController = navigationViewController
         window.makeKeyAndVisible()
@@ -56,5 +55,12 @@ extension MainIneractorImpl: MainIneractor {
                 print("Some event")
             }
         }
+    }
+    
+    func runChatVC() {
+        let vc = factory.getChat()
+        navigationViewController.setViewControllers([vc], animated: true)
+        window.rootViewController = navigationViewController
+        window.makeKeyAndVisible()
     }
 }

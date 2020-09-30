@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Chat List View Controller-->
+        <scene sceneID="SYC-5y-gob">
+            <objects>
+                <viewController storyboardIdentifier="ChatListViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lBZ-3n-0f1" customClass="ChatListViewController" customModule="TinkoffChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mCu-Sz-sjw">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="JIe-76-TiI">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="N9w-sH-L0X" firstAttribute="trailing" secondItem="JIe-76-TiI" secondAttribute="trailing" id="UNq-Xv-vPL"/>
+                            <constraint firstItem="N9w-sH-L0X" firstAttribute="bottom" secondItem="JIe-76-TiI" secondAttribute="bottom" id="qIv-0y-qkK"/>
+                            <constraint firstItem="JIe-76-TiI" firstAttribute="top" secondItem="N9w-sH-L0X" secondAttribute="top" id="yyh-2x-FjJ"/>
+                            <constraint firstItem="JIe-76-TiI" firstAttribute="leading" secondItem="N9w-sH-L0X" secondAttribute="leading" id="zPY-lT-JiP"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="N9w-sH-L0X"/>
+                    </view>
+                    <connections>
+                        <outlet property="chatTableView" destination="JIe-76-TiI" id="td9-2R-XSD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="egv-gX-Ael" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="149" y="80"/>
+        </scene>
+    </scenes>
+</document>

@@ -10,5 +10,10 @@ import Foundation
 
 
 struct ViewControllersID {
-    static let profileVC = "ProfileViewController"
+    static let share = ViewControllersID()
+    
+    let profileVC = "ProfileViewController"
+    let chatListVC = "ChatListViewController"
+    
+    private init() {}
 }
