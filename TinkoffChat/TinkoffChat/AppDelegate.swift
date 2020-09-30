@@ -23,10 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ application: UIApplication) {
-        let factroy: MainFactory = MainFactoryImpl()
         let presenterFactory: MainPresentersFactory = MainPresentersFactoryImpl()
+        let factroy: MainFactory = MainFactoryImpl(presenterFactory: presenterFactory)
         window = UIWindow()
-        let _: MainIneractor = MainIneractorImpl(factory: factroy, presenterFactory: presenterFactory, window: window ?? UIWindow())
+        let _: MainIneractor = MainIneractorImpl(factory: factroy, window: window ?? UIWindow())
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

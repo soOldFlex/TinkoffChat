@@ -16,12 +16,17 @@ protocol MainFactory {
 final class MainFactoryImpl: MainFactory {
     //TODO: - Вынести ИД Сторибордов в отдельный домен
     private let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    private let presenterFactory: MainPresentersFactory
+    
+    init(presenterFactory: MainPresentersFactory) {
+        self.presenterFactory = presenterFactory
+    }
     
     func getProfile() -> ProfileViewController {
         guard let initialVc = storyboard.instantiateInitialViewController() as? ProfileViewController else {
             fatalError("Bubub")
         }
-        let presenter = ProfilePresenterImpl(view: initialVc)
+        let presenter = presenterFactory.profilePresenter(for: initialVc)
         initialVc.presenter = presenter
         return initialVc
     }

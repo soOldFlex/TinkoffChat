@@ -17,13 +17,11 @@ protocol MainIneractor {
 struct MainIneractorImpl {
     
     private let factory: MainFactory
-    private let presenterFactory: MainPresentersFactory
     private let navigationViewController = UINavigationController()
     private let window: UIWindow
     
-    init(factory: MainFactory, presenterFactory: MainPresentersFactory, window: UIWindow) {
+    init(factory: MainFactory, window: UIWindow) {
         self.factory = factory
-        self.presenterFactory = presenterFactory
         self.window = window
         
         runInitialVC()
@@ -46,8 +44,8 @@ extension MainIneractorImpl: MainIneractor {
     
      func runInitialVC() {
         let vc = factory.getProfile()
-        let presenter = presenterFactory.profilePresenter(for: vc)
-        vc.presenter = presenter
+        //let presenter = presenterFactory.profilePresenter(for: vc)
+        //vc.presenter = presenter
         navigationViewController.setViewControllers([vc], animated: true)
         window.rootViewController = navigationViewController
         window.makeKeyAndVisible()
